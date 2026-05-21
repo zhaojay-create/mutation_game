@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://cqs2livtuin68"]
+
+[ext_resource type="Script" uid="uid://de16s0ie3i7dk" path="res://main.gd" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://cwohuvw3ereo2" path="res://components/HealthComponent.gd" id="2_lquwl"]
+
+[node name="Main" type="Node" unique_id=258623188]
+script = ExtResource("1_1bvp3")
+
+[node name="HealthComponent" type="Node" parent="." unique_id=1630219012]
+script = ExtResource("2_lquwl")
+metadata/_custom_type_script = "uid://cwohuvw3ereo2"
