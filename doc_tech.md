@@ -198,18 +198,45 @@ Node: HatchComponent
 
 ---
 
-## 五、Nexus（基地节点）
+## 五、Nexus（核心节点）
 
 ```
 场景结构:
-  Nexus (StaticBody2D)
+  Nexus (Area2D)                  # 用 Area2D 检测进入的敌人
   ├── Sprite2D
-  ├── CollisionShape2D
-  └── HealthComponent
+  ├── CollisionShape2D            # 触发区域（覆盖中央若干格）
+  └── CorruptionComponent         # 污染度组件（见下）
 
 特点:
-  - HealthComponent.died 信号 → 触发 GameManager 游戏失败流程
-  - 不挂 AttackComponent
+  - 敌人进入 Area2D → body_entered 信号 → CorruptionComponent.add_corruption()
+  - 污染度达到上限 → 触发 GameManager.game_over()
+  - 不挂 AttackComponent，不挂 HealthComponent
+  - 污染度越高，Sprite2D 的 modulate 颜色从白色渐变到黑紫色
+```
+
+### CorruptionComponent.gd
+
+```gdscript
+class_name CorruptionComponent
+extends Node
+
+@export var max_corruption: float = 100.0
+@export var corruption_per_enemy: float = 10.0
+
+var current_corruption: float = 0.0
+
+signal corruption_changed(current: float, maximum: float)
+signal fully_corrupted()
+
+func add_corruption(amount: float = -1.0) -> void:
+    var value := corruption_per_enemy if amount < 0.0 else amount
+    current_corruption = minf(current_corruption + value, max_corruption)
+    corruption_changed.emit(current_corruption, max_corruption)
+    if current_corruption >= max_corruption:
+        fully_corrupted.emit()
+
+func get_ratio() -> float:
+    return current_corruption / max_corruption
 ```
 
 ---

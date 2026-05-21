@@ -1,12 +1,28 @@
-extends Node
+extends Node2D
 
 @onready var hcom := $HealthComponent
+@onready var soil_layer: TileMapLayer = %SoilTileLayer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	#_test_health()
 	#_test_attack()
-	_test_mutation()
+	#_test_mutation()
+	pass
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		var world_pos := get_global_mouse_position()
+		var soil := get_soil_at(world_pos)
+		var cell := soil_layer.local_to_map(world_pos)
+		print("[Soil] cell=%s  type=%s" % [cell, MutationComponent.SoilType.keys()[soil]])
+
+func get_soil_at(world_pos: Vector2) -> MutationComponent.SoilType:
+	var cell := soil_layer.local_to_map(world_pos)
+	var tile_data := soil_layer.get_cell_tile_data(cell)
+	if tile_data == null:
+		return MutationComponent.SoilType.NORMAL
+	return tile_data.get_custom_data("type") as int as MutationComponent.SoilType
 
 
 # ── HealthComponent ──────────────────────────────
