@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://de16s0ie3i7dk" path="res://main.gd" id="1_1bvp3"]
 [ext_resource type="Script" uid="uid://cwohuvw3ereo2" path="res://components/HealthComponent.gd" id="2_lquwl"]
 [ext_resource type="Texture2D" uid="uid://c5csyq5rvs6p7" path="res://assets/tiles.png" id="3_h2yge"]
+[ext_resource type="PackedScene" uid="uid://bp3eyrdpa8rj0" path="res://entities/enemies/enemy_1.tscn" id="4_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://ds0tehnrafv2a" path="res://world/Nexus.tscn" id="5_lquwl"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1bvp3"]
 texture = ExtResource("3_h2yge")
@@ -473,3 +475,9 @@ tile_set = SubResource("TileSet_272bh")
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=975164025]
 navigation_polygon = SubResource("NavigationPolygon_h2yge")
+
+[node name="Nexus" parent="." unique_id=336389209 instance=ExtResource("5_lquwl")]
+position = Vector2(1002, 90)
+
+[node name="Enemy1" parent="." unique_id=625501970 instance=ExtResource("4_1bvp3")]
+position = Vector2(827, 365)

@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://bp3eyrdpa8rj0"]
+
+[ext_resource type="Script" uid="uid://c2xlhhe56myrw" path="res://entities/enemies/melee_enemy.gd" id="1_g0x22"]
+[ext_resource type="Texture2D" uid="uid://cqnits7lhvbfm" path="res://assets/Vector/Enemies/bee_a.svg" id="1_i3l3x"]
+[ext_resource type="Script" uid="uid://cwohuvw3ereo2" path="res://components/HealthComponent.gd" id="3_1n511"]
+[ext_resource type="Script" uid="uid://dbyx4nfwrq2m1" path="res://components/AttackComponent.gd" id="4_2icl4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_g0x22"]
+radius = 31.04835
+
+[node name="Enemy1" type="CharacterBody2D" unique_id=625501970]
+collision_layer = 8
+collision_mask = 15
+script = ExtResource("1_g0x22")
+corruption = 30.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=351357854]
+texture = ExtResource("1_i3l3x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=496877535]
+shape = SubResource("CircleShape2D_g0x22")
+
+[node name="AttackComponent" type="Node" parent="." unique_id=1810158378]
+script = ExtResource("4_2icl4")
+range = 50.0
+metadata/_custom_type_script = "uid://dbyx4nfwrq2m1"
+
+[node name="HealthComponent" type="Node" parent="." unique_id=628012942]
+script = ExtResource("3_1n511")
+metadata/_custom_type_script = "uid://cwohuvw3ereo2"

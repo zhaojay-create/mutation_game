@@ -24,8 +24,8 @@
 - 每种土壤对应一个 TileSet 中的 Tile，附加自定义数据：
   ```
   TileData 自定义属性:
-    soil_type : String   # "normal" | "fire" | "poison" | "water" | "dark"
-    mutation_tags : Array[String]  # ["burn", "dot"] 等效果标签
+  soil_type : String   # "normal" | "fire" | "poison" | "water" | "dark"
+  mutation_tags : Array[String]  # ["burn", "dot"] 等效果标签
   ```
 - 查询某坐标的土壤：`TileMapLayer.get_cell_tile_data(coords).get_custom_data("soil_type")`
 - 玩家修改土壤：`TileMapLayer.set_cell(coords, source_id, atlas_coords)`
@@ -41,15 +41,15 @@
 ```
 Node: HealthComponent
   属性:
-    max_hp     : float
-    current_hp : float  (运行时)
+	max_hp     : float
+	current_hp : float  (运行时)
   信号:
-    damaged(amount: float)
-    healed(amount: float)
-    died()
+	damaged(amount: float)
+	healed(amount: float)
+	died()
   方法:
-    take_damage(amount: float)
-    heal(amount: float)
+	take_damage(amount: float)
+	heal(amount: float)
 ```
 
 ### 2.2 AttackComponent（攻击/伤害组件）
@@ -57,17 +57,17 @@ Node: HealthComponent
 ```
 Node: AttackComponent
   属性:
-    damage      : float
-    range       : float
-    cooldown    : float   # 秒
+	damage      : float
+	range       : float
+	cooldown    : float   # 秒
   内部:
-    _timer      : float   # 运行时冷却计数
+	_timer      : float   # 运行时冷却计数
   信号:
-    attack_executed(target: Node)
+	attack_executed(target: Node)
   方法:
-    can_attack() -> bool
-    do_attack(target: Node)
-    reset_cooldown()
+	can_attack() -> bool
+	do_attack(target: Node)
+	reset_cooldown()
 ```
 
 ### 2.3 MutationComponent（变异组件）
@@ -75,13 +75,13 @@ Node: AttackComponent
 ```
 Node: MutationComponent
   属性:
-    soil_type        : String       # 当前所在土壤
-    active_tags      : Array[String] # 已激活变异标签
+	soil_type        : String       # 当前所在土壤
+	active_tags      : Array[String] # 已激活变异标签
   信号:
-    mutated(soil_type: String, tags: Array)
+	mutated(soil_type: String, tags: Array)
   方法:
-    apply_mutation(soil_type: String)  # 即时生效，读土壤→写 active_tags→发信号
-    clear_mutation()
+	apply_mutation(soil_type: String)  # 即时生效，读土壤→写 active_tags→发信号
+	clear_mutation()
 ```
 
 ### 2.4 HatchComponent（孵化组件，蛋用）
@@ -89,15 +89,15 @@ Node: MutationComponent
 ```
 Node: HatchComponent
   属性:
-    hatch_scenes     : Dictionary   # soil_type -> PackedScene
-    hatch_time       : float        # 孵化时长（秒）
-    default_scene    : PackedScene
+	hatch_scenes     : Dictionary   # soil_type -> PackedScene
+	hatch_time       : float        # 孵化时长（秒）
+	default_scene    : PackedScene
   信号:
-    hatched(instance: Node)
+	hatched(instance: Node)
   方法:
-    start_hatch(soil_type: String)  # 启动孵化计时
-    get_progress() -> float         # 返回孵化进度 0.0~1.0（供进度条用）
-    _on_hatch_complete()            # 内部：按 soil_type 实例化对应场景
+	start_hatch(soil_type: String)  # 启动孵化计时
+	get_progress() -> float         # 返回孵化进度 0.0~1.0（供进度条用）
+	_on_hatch_complete()            # 内部：按 soil_type 实例化对应场景
 ```
 
 ---
@@ -191,7 +191,7 @@ Node: HatchComponent
 每帧:
   1. find_target() → 优先 DetectionArea 内的 PlaceableBase
   2. 若有目标 Placeable → NavigationAgent2D 目标设为 Placeable.position
-     否则 → 目标设为 Nexus.position
+	 否则 → 目标设为 Nexus.position
   3. NavigationAgent2D 规避地形障碍（TileMapLayer 的导航层）
   4. 到达攻击范围 → AttackComponent.do_attack(target)
 ```
@@ -229,14 +229,14 @@ signal corruption_changed(current: float, maximum: float)
 signal fully_corrupted()
 
 func add_corruption(amount: float = -1.0) -> void:
-    var value := corruption_per_enemy if amount < 0.0 else amount
-    current_corruption = minf(current_corruption + value, max_corruption)
-    corruption_changed.emit(current_corruption, max_corruption)
-    if current_corruption >= max_corruption:
-        fully_corrupted.emit()
+	var value := corruption_per_enemy if amount < 0.0 else amount
+	current_corruption = minf(current_corruption + value, max_corruption)
+	corruption_changed.emit(current_corruption, max_corruption)
+	if current_corruption >= max_corruption:
+		fully_corrupted.emit()
 
 func get_ratio() -> float:
-    return current_corruption / max_corruption
+	return current_corruption / max_corruption
 ```
 
 ---
@@ -246,30 +246,30 @@ func get_ratio() -> float:
 ```
 Node: PlacementManager (Node2D)
   属性:
-    snap_cell_size   : Vector2   # 隐藏吸附网格单元大小，如 (32, 32)
-    soil_layer       : TileMapLayer  # 引用土壤 TileMapLayer
-    terrain_layer    : TileMapLayer  # 引用地形障碍 TileMapLayer
+	snap_cell_size   : Vector2   # 隐藏吸附网格单元大小，如 (32, 32)
+	soil_layer       : TileMapLayer  # 引用土壤 TileMapLayer
+	terrain_layer    : TileMapLayer  # 引用地形障碍 TileMapLayer
 
   方法:
-    snap_to_grid(world_pos: Vector2) -> Vector2
-      # world_pos.snapped(snap_cell_size) + offset
+	snap_to_grid(world_pos: Vector2) -> Vector2
+	  # world_pos.snapped(snap_cell_size) + offset
 
-    get_soil_at(world_pos: Vector2) -> String
-      # 世界坐标 → TileMapLayer 格坐标 → 读 soil_type
+	get_soil_at(world_pos: Vector2) -> String
+	  # 世界坐标 → TileMapLayer 格坐标 → 读 soil_type
 
-    can_place(scene: PackedScene, world_pos: Vector2) -> bool
-      # 1. snap_to_grid
-      # 2. 检查 terrain_layer 是否可放
-      # 3. 检查 FootprintArea 是否与已有 PlaceableBase 重叠
+	can_place(scene: PackedScene, world_pos: Vector2) -> bool
+	  # 1. snap_to_grid
+	  # 2. 检查 terrain_layer 是否可放
+	  # 3. 检查 FootprintArea 是否与已有 PlaceableBase 重叠
 
-    place(scene: PackedScene, world_pos: Vector2)
-      # 1. can_place → false 则返回
-      # 2. 实例化 scene，设置 position = snap_to_grid(world_pos)
-      # 3. 调用 instance.on_placed(get_soil_at(world_pos))
+	place(scene: PackedScene, world_pos: Vector2)
+	  # 1. can_place → false 则返回
+	  # 2. 实例化 scene，设置 position = snap_to_grid(world_pos)
+	  # 3. 调用 instance.on_placed(get_soil_at(world_pos))
 
   预览逻辑 (_process):
-    - 实时调用 snap_to_grid(mouse_pos) 更新预览位置
-    - can_place → true → 绿色 modulate；false → 红色 modulate
+	- 实时调用 snap_to_grid(mouse_pos) 更新预览位置
+	- can_place → true → 绿色 modulate；false → 红色 modulate
 ```
 
 ---
@@ -300,7 +300,7 @@ res://
 │   ├── MapGenerator.gd
 │   └── WaveManager.gd
 └── autoloads/
-    └── GameManager.gd
+	└── GameManager.gd
 ```
 
 > **为什么 base 用 `.tscn` + `.gd` 而不是纯 `.gd`？**
@@ -348,7 +348,7 @@ CollisionMask  : WORLD (1)          # 与地形发生物理阻挡，不穿墙
 ```
 CollisionLayer : PLACEABLE_FOOTPRINT (5)
 CollisionMask  : PLACEABLE (2)      # 检测与其他已放置单位的重叠 → 红色预览
-               + WORLD (1)          # 检测地形阻挡 → 红色预览
+			   + WORLD (1)          # 检测地形阻挡 → 红色预览
 ```
 
 #### Nexus（CollisionShape2D）
@@ -363,9 +363,9 @@ CollisionMask  : 无
 ```
 CollisionLayer : ENEMY (4)
 CollisionMask  : WORLD (1)          # 被地形阻挡，走寻路绕行
-               + PLACEABLE (2)      # 被放置单位物理阻挡（撞上则停下攻击）
-               + NEXUS (3)          # 被 Nexus 物理阻挡（到达后攻击）
-               + ENEMY (4)          # 敌人之间互不穿透（可选，拥挤感）
+			   + PLACEABLE (2)      # 被放置单位物理阻挡（撞上则停下攻击）
+			   + NEXUS (3)          # 被 Nexus 物理阻挡（到达后攻击）
+			   + ENEMY (4)          # 敌人之间互不穿透（可选，拥挤感）
 ```
 
 #### EnemyBase（DetectionArea — Area2D，寻敌感知）
@@ -373,7 +373,7 @@ CollisionMask  : WORLD (1)          # 被地形阻挡，走寻路绕行
 ```
 CollisionLayer : ENEMY_DETECTION (6)
 CollisionMask  : PLACEABLE (2)      # 感知范围内的放置单位 → 切换攻击目标
-               + NEXUS (3)          # 感知 Nexus
+			   + NEXUS (3)          # 感知 Nexus
 ```
 
 #### 植物/动物 AttackComponent（攻击范围 Area2D）
@@ -388,7 +388,7 @@ CollisionMask  : ENEMY (4)          # 感知攻击范围内的敌人
 ```
 CollisionLayer : PROJECTILE (7)
 CollisionMask  : ENEMY (4)          # 命中敌人
-               + WORLD (1)          # 撞墙消失
+			   + WORLD (1)          # 撞墙消失
 ```
 
 ---
@@ -417,23 +417,23 @@ CollisionMask  : ENEMY (4)          # 命中敌人
 ```
 游戏启动
   → MapGenerator.generate(seed: int = -1)
-      1. 生成地形层（障碍/水域/通路）
-          - 噪声算法（FastNoiseLite）生成高度图
-          - 高度 > 阈值 → 障碍 Tile；低洼 → 水域 Tile
-          - 保证地图中央区域（Nexus 周围）始终畅通
-          - 保证四方边缘有敌人可通行的入口通道
-      2. 生成土壤层
-          - 独立噪声图（不同 seed offset）采样土壤类型
-          - 每种土壤类型对应噪声区间段：
-              [-1.0, -0.4) → 暗土
-              [-0.4,  0.0) → 毒土
-              [ 0.0,  0.3) → 普通土
-              [ 0.3,  0.6) → 水土
-              [ 0.6,  1.0] → 火焰土
-          - 可配置各类型权重调整出现概率
-      3. 放置 Nexus 到地图中央格
-      4. 标记四方敌人刷新点（地图边缘固定位置）
-      5. 更新 NavigationRegion2D（基于地形层重建导航网格）
+	  1. 生成地形层（障碍/水域/通路）
+		  - 噪声算法（FastNoiseLite）生成高度图
+		  - 高度 > 阈值 → 障碍 Tile；低洼 → 水域 Tile
+		  - 保证地图中央区域（Nexus 周围）始终畅通
+		  - 保证四方边缘有敌人可通行的入口通道
+	  2. 生成土壤层
+		  - 独立噪声图（不同 seed offset）采样土壤类型
+		  - 每种土壤类型对应噪声区间段：
+			  [-1.0, -0.4) → 暗土
+			  [-0.4,  0.0) → 毒土
+			  [ 0.0,  0.3) → 普通土
+			  [ 0.3,  0.6) → 水土
+			  [ 0.6,  1.0] → 火焰土
+		  - 可配置各类型权重调整出现概率
+	  3. 放置 Nexus 到地图中央格
+	  4. 标记四方敌人刷新点（地图边缘固定位置）
+	  5. 更新 NavigationRegion2D（基于地形层重建导航网格）
 ```
 
 ### MapGenerator 接口
@@ -441,20 +441,20 @@ CollisionMask  : ENEMY (4)          # 命中敌人
 ```
 Node: MapGenerator (Node)
   属性:
-    map_size         : Vector2i     # 地图格子数，如 (64, 64)
-    terrain_layer    : TileMapLayer
-    soil_layer       : TileMapLayer
-    noise_terrain    : FastNoiseLite
-    noise_soil       : FastNoiseLite
-    soil_type_ranges : Array        # 噪声区间 → soil_type 映射表
+	map_size         : Vector2i     # 地图格子数，如 (64, 64)
+	terrain_layer    : TileMapLayer
+	soil_layer       : TileMapLayer
+	noise_terrain    : FastNoiseLite
+	noise_soil       : FastNoiseLite
+	soil_type_ranges : Array        # 噪声区间 → soil_type 映射表
 
   方法:
-    generate(seed: int = -1)        # -1 = 随机 seed，否则复现同一张地图
-    get_spawn_points() -> Array[Vector2]  # 返回四方刷新点世界坐标
-    _fill_terrain()
-    _fill_soil()
-    _ensure_nexus_clear()            # 强制清空 Nexus 周围 N 格的障碍
-    _ensure_border_passages()       # 保证四边各有入口
+	generate(seed: int = -1)        # -1 = 随机 seed，否则复现同一张地图
+	get_spawn_points() -> Array[Vector2]  # 返回四方刷新点世界坐标
+	_fill_terrain()
+	_fill_soil()
+	_ensure_nexus_clear()            # 强制清空 Nexus 周围 N 格的障碍
+	_ensure_border_passages()       # 保证四边各有入口
 ```
 
 ### 波次系统（WaveManager）
@@ -462,21 +462,21 @@ Node: MapGenerator (Node)
 ```
 Node: WaveManager (Node)
   属性:
-    wave_number      : int          # 当前波次
-    spawn_points     : Array[Vector2]  # 来自 MapGenerator
-    enemy_scenes     : Array[PackedScene]
-    wave_config      : Array[Dictionary]
-      # 示例: [{"type": "basic", "count": 5, "interval": 1.0}, ...]
+	wave_number      : int          # 当前波次
+	spawn_points     : Array[Vector2]  # 来自 MapGenerator
+	enemy_scenes     : Array[PackedScene]
+	wave_config      : Array[Dictionary]
+	  # 示例: [{"type": "basic", "count": 5, "interval": 1.0}, ...]
 
   信号:
-    wave_started(wave_number: int)
-    wave_cleared()
-    all_waves_cleared()
+	wave_started(wave_number: int)
+	wave_cleared()
+	all_waves_cleared()
 
   方法:
-    start_next_wave()
-    _spawn_enemy(scene: PackedScene, spawn_point: Vector2)
-    _on_enemy_died()    # 敌人死亡计数，全灭 → wave_cleared 信号
+	start_next_wave()
+	_spawn_enemy(scene: PackedScene, spawn_point: Vector2)
+	_on_enemy_died()    # 敌人死亡计数，全灭 → wave_cleared 信号
 ```
 
 **波次难度扩展：** 每波结束后 `wave_config` 可动态增加敌人数量/类型，实现无限波次递增难度。
@@ -488,22 +488,22 @@ Node: WaveManager (Node)
 ```
 玩家点击放置
   → PlacementManager.place(scene, mouse_pos)
-      → snap_to_grid()
-      → can_place() 检查碰撞+地形
-      → 实例化 scene
-      → on_placed(soil_type)
-          → MutationComponent.apply_mutation(soil_type)
-              → 读 active_tags
-              → 通知 AttackComponent 修改 damage/range 等
-              → 发出 mutated 信号（用于视觉特效）
+	  → snap_to_grid()
+	  → can_place() 检查碰撞+地形
+	  → 实例化 scene
+	  → on_placed(soil_type)
+		  → MutationComponent.apply_mutation(soil_type)
+			  → 读 active_tags
+			  → 通知 AttackComponent 修改 damage/range 等
+			  → 发出 mutated 信号（用于视觉特效）
 
 敌人寻路
   → NavigationAgent2D 目标 = 最近 PlaceableBase 或 Nexus
   → 到达攻击范围 → AttackComponent.do_attack(target)
-      → target.HealthComponent.take_damage(damage)
-          → current_hp <= 0 → died 信号
-              → PlaceableBase.destroyed 信号
-                  → 敌人重新 find_target()
+	  → target.HealthComponent.take_damage(damage)
+		  → current_hp <= 0 → died 信号
+			  → PlaceableBase.destroyed 信号
+				  → 敌人重新 find_target()
 ```
 
 ---
@@ -525,20 +525,20 @@ signal healed(amount: float)
 signal died()
 
 func _ready() -> void:
-    current_hp = max_hp
+	current_hp = max_hp
 
 func take_damage(amount: float) -> void:
-    current_hp = maxf(current_hp - amount, 0.0)
-    damaged.emit(amount)
-    if current_hp == 0.0:
-        died.emit()
+	current_hp = maxf(current_hp - amount, 0.0)
+	damaged.emit(amount)
+	if current_hp == 0.0:
+		died.emit()
 
 func heal(amount: float) -> void:
-    current_hp = minf(current_hp + amount, max_hp)
-    healed.emit(amount)
+	current_hp = minf(current_hp + amount, max_hp)
+	healed.emit(amount)
 
 func is_alive() -> bool:
-    return current_hp > 0.0
+	return current_hp > 0.0
 ```
 
 ---
@@ -558,22 +558,22 @@ var _timer: float = 0.0
 signal attack_executed(target: Node)
 
 func _process(delta: float) -> void:
-    if _timer > 0.0:
-        _timer -= delta
+	if _timer > 0.0:
+		_timer -= delta
 
 func can_attack() -> bool:
-    return _timer <= 0.0
+	return _timer <= 0.0
 
 func do_attack(target: Node) -> void:
-    if not can_attack():
-        return
-    _timer = cooldown
-    if target.has_node("HealthComponent"):
-        target.get_node("HealthComponent").take_damage(damage)
-    attack_executed.emit(target)
+	if not can_attack():
+		return
+	_timer = cooldown
+	if target.has_node("HealthComponent"):
+		target.get_node("HealthComponent").take_damage(damage)
+	attack_executed.emit(target)
 
 func reset_cooldown() -> void:
-    _timer = 0.0
+	_timer = 0.0
 ```
 
 ---
@@ -590,24 +590,24 @@ var active_tags: Array[String] = []
 signal mutated(soil_type: String, tags: Array)
 
 const SOIL_TAGS: Dictionary = {
-    "normal":  [],
-    "fire":    ["burn"],
-    "poison":  ["dot", "poison"],
-    "water":   ["slow", "heal_aura"],
-    "dark":    ["stealth", "crit"],
+	"normal":  [],
+	"fire":    ["burn"],
+	"poison":  ["dot", "poison"],
+	"water":   ["slow", "heal_aura"],
+	"dark":    ["stealth", "crit"],
 }
 
 func apply_mutation(new_soil_type: String) -> void:
-    soil_type = new_soil_type
-    active_tags = SOIL_TAGS.get(soil_type, []).duplicate()
-    mutated.emit(soil_type, active_tags)
+	soil_type = new_soil_type
+	active_tags = SOIL_TAGS.get(soil_type, []).duplicate()
+	mutated.emit(soil_type, active_tags)
 
 func clear_mutation() -> void:
-    soil_type = "normal"
-    active_tags.clear()
+	soil_type = "normal"
+	active_tags.clear()
 
 func has_tag(tag: String) -> bool:
-    return tag in active_tags
+	return tag in active_tags
 ```
 
 ---
@@ -629,32 +629,32 @@ var _hatching: bool = false
 signal hatched(instance: Node)
 
 func start_hatch(soil_type: String) -> void:
-    _soil_type = soil_type
-    _timer = hatch_time
-    _hatching = true
+	_soil_type = soil_type
+	_timer = hatch_time
+	_hatching = true
 
 func _process(delta: float) -> void:
-    if not _hatching:
-        return
-    _timer -= delta
-    if _timer <= 0.0:
-        _hatching = false
-        _on_hatch_complete()
+	if not _hatching:
+		return
+	_timer -= delta
+	if _timer <= 0.0:
+		_hatching = false
+		_on_hatch_complete()
 
 func get_progress() -> float:
-    if not _hatching:
-        return 0.0
-    return 1.0 - (_timer / hatch_time)
+	if not _hatching:
+		return 0.0
+	return 1.0 - (_timer / hatch_time)
 
 func _on_hatch_complete() -> void:
-    var scene: PackedScene = hatch_scenes.get(_soil_type, default_scene)
-    if scene == null:
-        return
-    var instance := scene.instantiate()
-    get_tree().current_scene.add_child(instance)
-    instance.global_position = owner.global_position
-    hatched.emit(instance)
-    owner.queue_free()
+	var scene: PackedScene = hatch_scenes.get(_soil_type, default_scene)
+	if scene == null:
+		return
+	var instance := scene.instantiate()
+	get_tree().current_scene.add_child(instance)
+	instance.global_position = owner.global_position
+	hatched.emit(instance)
+	owner.queue_free()
 ```
 
 ---
@@ -676,20 +676,20 @@ signal placed(position: Vector2, soil_type: String)
 signal destroyed()
 
 func on_placed(soil_type: String) -> void:
-    if placeable_on.size() > 0 and soil_type not in placeable_on:
-        return
-    mutation.apply_mutation(soil_type)
-    placed.emit(global_position, soil_type)
+	if placeable_on.size() > 0 and soil_type not in placeable_on:
+		return
+	mutation.apply_mutation(soil_type)
+	placed.emit(global_position, soil_type)
 
 func get_footprint_rect() -> Rect2:
-    return Rect2(global_position - footprint_size * 0.5, footprint_size)
+	return Rect2(global_position - footprint_size * 0.5, footprint_size)
 
 func _ready() -> void:
-    health.died.connect(_on_died)
+	health.died.connect(_on_died)
 
 func _on_died() -> void:
-    destroyed.emit()
-    queue_free()
+	destroyed.emit()
+	queue_free()
 ```
 
 ---
@@ -703,14 +703,14 @@ extends PlaceableBase
 @onready var attack: AttackComponent = $AttackComponent
 
 func _ready() -> void:
-    super._ready()
-    mutation.mutated.connect(_on_mutated)
+	super._ready()
+	mutation.mutated.connect(_on_mutated)
 
 func _on_mutated(_soil_type: String, tags: Array) -> void:
-    if "burn" in tags:
-        attack.damage *= 1.5
-    if "dot" in tags:
-        attack.cooldown *= 0.8
+	if "burn" in tags:
+		attack.damage *= 1.5
+	if "dot" in tags:
+		attack.cooldown *= 0.8
 ```
 
 ---
@@ -726,25 +726,25 @@ extends PlaceableBase
 var _target: Node = null
 
 func _ready() -> void:
-    super._ready()
-    set_physics_process(true)
-    mutation.mutated.connect(_on_mutated)
+	super._ready()
+	set_physics_process(true)
+	mutation.mutated.connect(_on_mutated)
 
 func _physics_process(_delta: float) -> void:
-    if _target == null or not is_instance_valid(_target):
-        return
-    var dist := global_position.distance_to(_target.global_position)
-    if dist <= attack.range and attack.can_attack():
-        attack.do_attack(_target)
+	if _target == null or not is_instance_valid(_target):
+		return
+	var dist := global_position.distance_to(_target.global_position)
+	if dist <= attack.range and attack.can_attack():
+		attack.do_attack(_target)
 
 func set_target(target: Node) -> void:
-    _target = target
+	_target = target
 
 func _on_mutated(_soil_type: String, tags: Array) -> void:
-    if "slow" in tags:
-        attack.range *= 1.2
-    if "crit" in tags:
-        attack.damage *= 2.0
+	if "slow" in tags:
+		attack.range *= 1.2
+	if "crit" in tags:
+		attack.damage *= 2.0
 ```
 
 ---
@@ -758,8 +758,8 @@ extends PlaceableBase
 @onready var hatch: HatchComponent = $HatchComponent
 
 func on_placed(soil_type: String) -> void:
-    super.on_placed(soil_type)
-    hatch.start_hatch(soil_type)
+	super.on_placed(soil_type)
+	hatch.start_hatch(soil_type)
 ```
 
 ---
@@ -783,46 +783,46 @@ signal reached_target()
 signal target_changed(new_target: Node)
 
 func _ready() -> void:
-    health.died.connect(_on_died)
-    detection.body_entered.connect(_on_body_entered)
-    call_deferred("_find_target")
+	health.died.connect(_on_died)
+	detection.body_entered.connect(_on_body_entered)
+	call_deferred("_find_target")
 
 func _physics_process(delta: float) -> void:
-    if _target == null or not is_instance_valid(_target):
-        _find_target()
-        return
+	if _target == null or not is_instance_valid(_target):
+		_find_target()
+		return
 
-    var dist := global_position.distance_to(_target.global_position)
-    if dist <= attack.range:
-        if attack.can_attack():
-            attack.do_attack(_target)
-        return
+	var dist := global_position.distance_to(_target.global_position)
+	if dist <= attack.range:
+		if attack.can_attack():
+			attack.do_attack(_target)
+		return
 
-    nav_agent.target_position = _target.global_position
-    var next := nav_agent.get_next_path_position()
-    velocity = (next - global_position).normalized() * move_speed
-    move_and_slide()
+	nav_agent.target_position = _target.global_position
+	var next := nav_agent.get_next_path_position()
+	velocity = (next - global_position).normalized() * move_speed
+	move_and_slide()
 
 func _find_target() -> void:
-    var bodies := detection.get_overlapping_bodies()
-    for body in bodies:
-        if body is PlaceableBase:
-            _set_target(body)
-            return
-    var nexus := get_tree().get_first_node_in_group("nexus")
-    if nexus:
-        _set_target(nexus)
+	var bodies := detection.get_overlapping_bodies()
+	for body in bodies:
+		if body is PlaceableBase:
+			_set_target(body)
+			return
+	var nexus := get_tree().get_first_node_in_group("nexus")
+	if nexus:
+		_set_target(nexus)
 
 func _set_target(t: Node) -> void:
-    _target = t
-    target_changed.emit(t)
+	_target = t
+	target_changed.emit(t)
 
 func _on_body_entered(body: Node) -> void:
-    if body is PlaceableBase and _target == null:
-        _set_target(body)
+	if body is PlaceableBase and _target == null:
+		_set_target(body)
 
 func _on_died() -> void:
-    queue_free()
+	queue_free()
 ```
 
 ---
