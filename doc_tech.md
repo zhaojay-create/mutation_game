@@ -878,14 +878,15 @@ func _on_died() -> void:
 
 ### Phase 3 — Nexus + 基础 Enemy（1–2 天）
 
-目标：一个敌人能走到 Nexus 并造成伤害，Nexus 死亡触发失败。
+目标：一个敌人能走到 Nexus 并上升污染度，污染度满触发失败。
 
-1. `Nexus.tscn` + `Nexus.gd`（StaticBody2D，挂 HealthComponent，加入 `nexus` group）
-2. `HealthComponent.died` → `GameManager.game_over()`
-3. `EnemyBase.tscn` + `EnemyBase.gd`（NavigationAgent2D 寻路到 Nexus）
-4. 手动在场景里放一个敌人，验证它能走到 Nexus 并攻击
+1. `CorruptionComponent.gd`（`components/`，`add_corruption` / `fully_corrupted` 信号）
+2. `Nexus.tscn` + `Nexus.gd`（Area2D，挂 CorruptionComponent，`body_entered` → `add_corruption()`，加入 `nexus` group）
+3. `CorruptionComponent.fully_corrupted` → `GameManager.game_over()`
+4. `EnemyBase.tscn` + `EnemyBase.gd`（NavigationAgent2D 寻路到 Nexus）
+5. 手动在场景里放一个敌人，验证它能走到 Nexus 并触发污染
 
-**里程碑：** 敌人走到 Nexus → Nexus 血量归零 → 控制台打印 "game over"
+**里程碑：** 敌人进入 Nexus → 污染度达到上限 → 控制台打印 "game over"
 
 ---
 

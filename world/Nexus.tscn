@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://ds0tehnrafv2a"]
+
+[ext_resource type="Texture2D" uid="uid://cx4bd35ral2ar" path="res://assets/Vector/Tiles/lock_green.svg" id="1_iwm33"]
+[ext_resource type="Script" uid="uid://c4hysnmu4ixxw" path="res://world/nexus.gd" id="1_r6w8g"]
+[ext_resource type="Script" uid="uid://biw3h7v7xlmlk" path="res://components/CorruptionComponent.gd" id="3_1im18"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ceb7q"]
+size = Vector2(88, 80)
+
+[node name="Nexus" type="Area2D" unique_id=336389209]
+script = ExtResource("1_r6w8g")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=383792547]
+texture = ExtResource("1_iwm33")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1274511616]
+shape = SubResource("RectangleShape2D_ceb7q")
+
+[node name="CorruptionComponent" type="Node" parent="." unique_id=891382766]
+script = ExtResource("3_1im18")
+metadata/_custom_type_script = "uid://biw3h7v7xlmlk"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
