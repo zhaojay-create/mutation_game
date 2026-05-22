@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameManager="*uid://bur6iqhb4fje4"
+PlacementManager="*uid://blh68p26c3i5w"
 
 [physics]
 

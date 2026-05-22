@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://bye4or8dnv5dx"]
+
+[ext_resource type="Script" uid="uid://dmwapff4hrgye" path="res://entities/base/plant_base.gd" id="1_plant"]
+[ext_resource type="Script" uid="uid://cwohuvw3ereo2" path="res://components/HealthComponent.gd" id="2_health"]
+[ext_resource type="Script" uid="uid://dydkoe6e6ink3" path="res://components/ShootComponent.gd" id="3_shoot"]
+[ext_resource type="PackedScene" uid="uid://bo1ocabpi05i2" path="res://entities/projectiles/YellowProjectile.tscn" id="4_proj"]
+[ext_resource type="Texture2D" uid="uid://bw350grthfgt1" path="res://icon.svg" id="5_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(48, 48)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_detect"]
+radius = 555.42865
+
+[node name="PlantA" type="StaticBody2D" unique_id=1538578014]
+collision_layer = 2
+script = ExtResource("1_plant")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1456899897]
+scale = Vector2(0.20312499, 0.20312496)
+texture = ExtResource("5_tex")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=100000001]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="HealthComponent" type="Node" parent="." unique_id=100000002]
+script = ExtResource("2_health")
+metadata/_custom_type_script = "uid://cwohuvw3ereo2"
+
+[node name="ShootComponent" type="Node" parent="." unique_id=577407921]
+script = ExtResource("3_shoot")
+projectile_scene = ExtResource("4_proj")
+cooldown = 1.5
+metadata/_custom_type_script = "uid://dydkoe6e6ink3"
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=100000003]
+collision_layer = 0
+collision_mask = 8
+
+[node name="DetectionShape" type="CollisionShape2D" parent="DetectionArea" unique_id=100000004]
+shape = SubResource("CircleShape2D_detect")

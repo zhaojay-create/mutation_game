@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bo1ocabpi05i2"]
+
+[ext_resource type="Script" uid="uid://dvmlyeteaj8os" path="res://entities/projectiles/projectile.gd" id="1_proj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lrjns"]
+size = Vector2(16, 16)
+
+[node name="YellowProjectile" type="Area2D" unique_id=1829373406]
+script = ExtResource("1_proj")
+damage = 50.0
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=248966072]
+offset_left = -18.999998
+offset_top = -18.999996
+offset_right = 21.000002
+offset_bottom = 21.000004
+rotation = 0.010634143
+color = Color(1, 1, 0.33333334, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=518402402]
+shape = SubResource("RectangleShape2D_lrjns")

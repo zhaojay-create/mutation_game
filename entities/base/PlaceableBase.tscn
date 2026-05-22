@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://c4clsimq8f76q"]
+
+[ext_resource type="Texture2D" uid="uid://2j2g4vhy16aj" path="res://assets/Sprites/Enemies/Default/saw_a.png" id="1_16uqe"]
+[ext_resource type="Script" uid="uid://dx23bhifeqomv" path="res://entities/base/placeable_base.gd" id="1_ano3o"]
+[ext_resource type="Script" uid="uid://cwohuvw3ereo2" path="res://components/HealthComponent.gd" id="3_rcig6"]
+[ext_resource type="Script" uid="uid://dbyx4nfwrq2m1" path="res://components/AttackComponent.gd" id="4_n7l8u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_16uqe"]
+size = Vector2(64, 64)
+
+[node name="PlaceableBase" type="StaticBody2D" unique_id=313862117]
+script = ExtResource("1_ano3o")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1082405809]
+texture = ExtResource("1_16uqe")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2041106788]
+shape = SubResource("RectangleShape2D_16uqe")
+
+[node name="HealthComponent" type="Node" parent="." unique_id=856271165]
+script = ExtResource("3_rcig6")
+metadata/_custom_type_script = "uid://cwohuvw3ereo2"
+
+[node name="AttackComponent" type="Node" parent="." unique_id=625308473]
+script = ExtResource("4_n7l8u")
+metadata/_custom_type_script = "uid://dbyx4nfwrq2m1"

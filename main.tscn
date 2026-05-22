@@ -5,6 +5,11 @@
 [ext_resource type="Texture2D" uid="uid://c5csyq5rvs6p7" path="res://assets/tiles.png" id="3_h2yge"]
 [ext_resource type="PackedScene" uid="uid://bp3eyrdpa8rj0" path="res://entities/enemies/enemy_1.tscn" id="4_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://ds0tehnrafv2a" path="res://world/Nexus.tscn" id="5_lquwl"]
+[ext_resource type="Script" uid="uid://balkqklog3srv" path="res://ui/placement_ui.gd" id="6_7mycd"]
+[ext_resource type="Script" uid="uid://bi72n1j7cpeu7" path="res://resources/placement_config.gd" id="7_5vw27"]
+[ext_resource type="Texture2D" uid="uid://bw350grthfgt1" path="res://icon.svg" id="8_kek77"]
+[ext_resource type="PackedScene" uid="uid://bye4or8dnv5dx" path="res://entities/plants/plantA.tscn" id="9_4c57u"]
+[ext_resource type="Texture2D" uid="uid://cby7wv0vnf548" path="res://assets/Vector/Tiles/cactus.svg" id="9_kek77"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1bvp3"]
 texture = ExtResource("3_h2yge")
@@ -455,6 +460,19 @@ sources/0 = SubResource("TileSetAtlasSource_7mycd")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_h2yge"]
 
+[sub_resource type="Resource" id="Resource_4c57u"]
+script = ExtResource("7_5vw27")
+display_name = "第一个"
+scene = ExtResource("9_4c57u")
+icon = ExtResource("8_kek77")
+metadata/_custom_type_script = "uid://bi72n1j7cpeu7"
+
+[sub_resource type="Resource" id="Resource_5vw27"]
+script = ExtResource("7_5vw27")
+display_name = "第二个"
+icon = ExtResource("9_kek77")
+metadata/_custom_type_script = "uid://bi72n1j7cpeu7"
+
 [node name="Main" type="Node2D" unique_id=2138556367]
 script = ExtResource("1_1bvp3")
 
@@ -480,4 +498,30 @@ navigation_polygon = SubResource("NavigationPolygon_h2yge")
 position = Vector2(1002, 90)
 
 [node name="Enemy1" parent="." unique_id=625501970 instance=ExtResource("4_1bvp3")]
-position = Vector2(827, 365)
+position = Vector2(331, 750)
+
+[node name="Enemy2" parent="." unique_id=900184517 instance=ExtResource("4_1bvp3")]
+position = Vector2(1754, 878)
+
+[node name="Enemy3" parent="." unique_id=243301452 instance=ExtResource("4_1bvp3")]
+position = Vector2(742, 823)
+
+[node name="Enemy4" parent="." unique_id=1467590179 instance=ExtResource("4_1bvp3")]
+position = Vector2(1161, 964)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=2076797607]
+script = ExtResource("6_7mycd")
+placements = Array[ExtResource("7_5vw27")]([SubResource("Resource_4c57u"), SubResource("Resource_5vw27")])
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer" unique_id=1020711716]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -70.0
+offset_top = -40.0
+offset_right = 70.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
